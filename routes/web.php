@@ -11,11 +11,21 @@
 |
 */
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin'],function ($router)
-{
+/**
+ * 后台管理
+ */
+Route::group([
+	'prefix' => 'admin', 
+	'namespace' => 'Admin',
+],function ($router) {
 
-	$router->resource('index', 'AdminUserController', 
+	//AdminUser
+	$router::group(['middleware' => ['auth.admin']], function ($admin)
+	{
+		$admin->resource('/', 'AdminUserController', 
 				['names' => 'admin.index']);
+		$admin->match(['get', 'post'], 'index','LoginController@index')->name('admin.login');
+	});
+
 
 });
-

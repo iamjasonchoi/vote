@@ -15,10 +15,10 @@ class CreateAdminUsersTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('admin_users', function(Blueprint $table) {
+		Schema::create('admin', function(Blueprint $table) {
             $table->increments('id');
-
-            $table->timestamps();
+            $table->string('username',16);
+            $table->string('password',128);
 		});
 	}
 
@@ -29,6 +29,6 @@ class CreateAdminUsersTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('admin_users');
+		Schema::drop('admin');
 	}
 }

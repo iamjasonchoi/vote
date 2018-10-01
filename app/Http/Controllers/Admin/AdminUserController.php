@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\UserRequest;
 
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\DB;
 
 use App\Repositories\Eloquent\AdminUserRepositoryEloquent;
@@ -35,7 +37,12 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        return 1123;
+        return view('admin.home');
+
+        // $username = 'test';
+        // $password = 'test';
+        // var_dump(Auth::guard('admin')->attempt(['username' => $username, 'password' => $password]));
+        // return;
     }
 
     /**
