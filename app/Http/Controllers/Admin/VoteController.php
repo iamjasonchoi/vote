@@ -3,53 +3,50 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
-use Illuminate\Support\Facades\DB;
+use Auth;
 
-use App\Repositories\Eloquent\AdminUserRepositoryEloquent;
+use Validator;
 
-use App\Repositories\Eloquent\AdminUserRepositoryEloquent as AdminUserRepository;
+use App\Http\Requests\VoteModelRequest;
 
 use App\Repositories\Eloquent\VoteModelRepositoryEloquent;
 
 use App\Repositories\Eloquent\VoteModelRepositoryEloquent as VoteModelRepository;
 
-class AdminUserController extends Controller
+class VoteController extends Controller
 {
 
-    private $admin;
+	private $vote_model;
 
-    public function __construct(AdminUserRepository $AdminUserRepository)
+    public function __construct(
+    	VoteModelRepository $VoteModelRepository)
     {
-        $this->admin = $AdminUserRepository;
+        $this->vote_model = $VoteModelRepository;
     }
 
-
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show Index
+     * @author leekachung <[leekachung17@gmail.com]>
+     * @DateTime        2018-10-02T20:04:18+0800
+     * @return 
      */
-    public function index(VoteModelRepository $VoteModelRepository)
-    {
-        $votelist = $VoteModelRepository->
-                    showVoteList(Auth::user()->id);
-        return view('admin.home', compact('votelist'));
-    }
-
-    /**
+    public function index($id)
+	{
+		return;
+	}
+    
+	/**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('admin.vote.create');
     }
 
     /**
@@ -58,9 +55,18 @@ class AdminUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(VoteModelRequest $request)
     {
-        //
+        //Store => success: boolean false: array
+		$res = $this->vote_model->createVoteModel($request, 
+			Auth::user()->id);
+		if (is_array($res)) {
+			flash($res['Content'])->error();
+			return back()->withInput();
+		}
+
+		flash('新建投票项目成功');
+		return redirect(route('admin.index.index'));
     }
 
     /**
@@ -71,7 +77,15 @@ class AdminUserController extends Controller
      */
     public function show($id)
     {
-        //
+    	$res = $this->vote_model->
+    		showVoteDetail($id, Auth::user()->id);
+
+    	if (is_array($res)) {
+			flash($res['Content'])->error();
+			return redirect(route('admin.index.index'));
+		}
+
+        return view('admin.vote.index');
     }
 
     /**
@@ -107,4 +121,7 @@ class AdminUserController extends Controller
     {
         //
     }
+
+
+
 }

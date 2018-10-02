@@ -17,14 +17,28 @@
 Route::group([
 	'prefix' => 'admin', 
 	'namespace' => 'Admin',
+	'middleware' => ['auth.admin']
 ],function ($router) {
 
-	//AdminUser
-	$router::group(['middleware' => ['auth.admin']], function ($admin)
-	{
-		$admin->resource('/', 'AdminUserController', 
+	//index
+	$router->resource('/', 'AdminUserController', 
 				['names' => 'admin.index']);
-		$admin->match(['get', 'post'], 'index','LoginController@index')->name('admin.login');
+
+	//login && logout
+	$router->match(['get', 'post'], 'index','LoginController@index')
+			->name('admin.login');
+	$router->get('logout', 'LoginController@logout')
+			->name('admin.logout');
+
+	//Vote
+	$router->resource('vote', 'VoteController', 
+			['names' => 'admin.vote']);
+
+	//Excel
+	$router::group(['prefix' => 'excel'], function ($excel)
+	{
+		$excel->get('export_model', 'ExcelController@exportModel')
+				->name('excel.model.export');
 	});
 
 

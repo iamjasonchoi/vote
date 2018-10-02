@@ -15,10 +15,10 @@ class LoginController extends Controller
 {
  
     /**
-     * 后台登录模块
-     * @author leekachung <[leekachung17@gmail.com]>
-     * @DateTime         2018-10-02T01:18:58+0800
-     * @return
+     * AdminLogin 后台登录模块
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  Request $request [description]
+     * @return [type]           [description]
      */
     public function index(Request $request)
     {
@@ -43,13 +43,23 @@ class LoginController extends Controller
             	'username' => $request->username,
             	'password' => $request->password,
             ])) {
-                session([
-                    'status' => "欢迎回来, {$request->username}"
-                ]);
+                flash("欢迎回来, {$request->username}");
             	return redirect(route('admin.index.index'));
             } else {
- 				return back()->withErrors('用户名或密码错误');
+                flash('用户名或密码错误')->error();
+ 				return back();
             }
         }
+    }
+
+    /**
+     * logout 登出
+     * @author leekachung <leekachung17@gmail.com>
+     * @return [type] [description]
+     */
+    public function logout()
+    {
+        Auth::logout();
+        return redirect(route('admin.login'));
     }
 }

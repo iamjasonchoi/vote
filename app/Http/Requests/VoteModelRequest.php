@@ -2,9 +2,12 @@
 
 namespace App\Http\Requests;
 
+
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+use Auth;
+
+class VoteModelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +16,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -24,7 +27,10 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|min:2|max:255',
+            'start' => 'required|
+                date_format:"Y-m-d H:i:s"|before:end',
+            'end' => 'required|date_format:"Y-m-d H:i:s"'
         ];
     }
 }

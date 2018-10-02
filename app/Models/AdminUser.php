@@ -4,10 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-use Prettus\Repository\Contracts\Transformable;
-
-use Prettus\Repository\Traits\TransformableTrait;
-
 use Illuminate\Contracts\Auth\Authenticatable;
 
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
@@ -17,9 +13,8 @@ use Illuminate\Auth\Authenticatable as AuthenticableTrait;
  *
  * @package namespace App\Models;
  */
-class AdminUser extends Model implements Transformable, Authenticatable
+class AdminUser extends Model implements Authenticatable
 {
-    use TransformableTrait;
     use AuthenticableTrait;
 
     /**

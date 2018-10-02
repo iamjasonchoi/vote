@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
 /**
- * Class RepositoriesUserRepository.
+ * Class Behalf.
  *
- * @package namespace App\Entities;
+ * @package namespace App\Models;
  */
-class RepositoriesUserRepository extends Model implements Transformable
+class Behalf extends Model implements Transformable
 {
     use TransformableTrait;
 
@@ -21,5 +21,9 @@ class RepositoriesUserRepository extends Model implements Transformable
      * @var array
      */
     protected $fillable = [];
+
+    protected $table = 'behalf';
+
+    public $timestamp = false;
 
 }
