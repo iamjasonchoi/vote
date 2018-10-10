@@ -8,16 +8,17 @@
         </div>
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">创建一个新的投票项目</div>
+                <div class="panel-heading">新增-{{ $model }}</div>
                 <div class="panel-body">
+                    @if ($model == '代表')
                     <form class="form-horizontal" method="POST" action="{{ route('admin.vote.store') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">项目名称</label>
+                            <label for="name" class="col-md-4 control-label">姓名:</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" autocomplete="off" value="{{ old('name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -28,10 +29,10 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('start') ? ' has-error' : '' }}">
-                            <label for="start" class="col-md-4 control-label">开始时间</label>
+                            <label for="start" class="col-md-4 control-label">学号:</label>
 
                             <div class="col-md-6">
-                                <input id="start" type="text" class="form-control time-select" autocomplete="off" name="start" value="{{ old('start') }}" required autofocus>
+                                <input id="start" type="text" class="form-control time-select" name="start" value="{{ old('start') }}" required autofocus>
 
                                 @if ($errors->has('start'))
                                     <span class="help-block">
@@ -40,22 +41,40 @@
                                 @endif
                             </div>
                         </div>
+                        @elseif ($model == '候选人')
+                        <form class="form-horizontal" method="POST" action="{{ route('admin.vote.store') }}">
+                        {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('end') ? ' has-error' : '' }}">
-                            <label for="end" class="col-md-4 control-label">截止时间</label>
+                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                            <label for="name" class="col-md-4 control-label">姓名:</label>
 
                             <div class="col-md-6">
-                                <input id="end" type="text" class="form-control time-select" name="end" autocomplete="off" value="{{ old('end') }}" required autofocus>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
 
-                                @if ($errors->has('end'))
+                                @if ($errors->has('name'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('end') }}</strong>
+                                        <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
-                        {{-- 后续添加海报 项目简介   --}}
+                        <div class="form-group{{ $errors->has('start') ? ' has-error' : '' }}">
+                            <label for="start" class="col-md-4 control-label">学号:</label>
+
+                            <div class="col-md-6">
+                                <input id="start" type="text" class="form-control time-select" name="start" value="{{ old('start') }}" required autofocus>
+
+                                @if ($errors->has('start'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('start') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        @else
+                        非法操作
+                        @endif
 
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
@@ -70,17 +89,4 @@
         </div>
     </div>
 </div>
-
-<script src="{{ asset('laydate/laydate.js') }}"></script>
-
-<script>
-    laydate.render({
-      elem: '#start',
-      type: 'datetime'
-    });
-    laydate.render({
-      elem: '#end',
-      type: 'datetime'
-    });
-</script>
 @endsection

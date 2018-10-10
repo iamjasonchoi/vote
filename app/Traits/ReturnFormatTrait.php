@@ -7,11 +7,10 @@ trait ReturnFormatTrait
 
 	/**
 	 * ReturnFormat
-	 * @author leekachung <[leekachung17@gmail.com]>
-	 * @DateTime        2018-10-02T21:24:22+0800
-	 * @param    [type] $status                  [description]
-	 * @param    [type] $content                 [description]
-	 * @param    [type] $ps                      [description]
+	 * @author leekachung <leekachung17@gmail.com>
+	 * @param  [Int] $status  [返回状态码]
+	 * @param  [String] $content [返回内容]
+	 * @param  [String] $ps      [返回补充内容]
 	 */
 	public function ReturnFormat($status, $content=null, $ps=null)
 	{

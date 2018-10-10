@@ -6,6 +6,7 @@
         <div class="col-md-12">
         @include('flash::message')
         <div class="panel panel-default alert">
+            <h3>你好, {{ Auth::user()->username }}</h3>
             <a href="{{ route('admin.logout') }}"
             >退出登录</a>
         </div>
@@ -23,7 +24,6 @@
                     id="votelist">
                     <thead>
                     <tr>
-                        <th>项目ID</th>
                         <th>项目名称</th>
                         <th>开始时间</th>
                         <th>截止时间</th>
@@ -34,9 +34,6 @@
                     @foreach($votelist as $k => $v)
                     <tr>
                         <td>
-                            {{ $v['id'] }}
-                        </td>
-                        <td>
                             {{ $v['name'] }}
                         </td>
                         <td>
@@ -46,10 +43,18 @@
                             {{ date("Y-m-d H:i:s",$v['end']) }}
                         </td>
                         <td>
-                            {{ date("Y-m-d H:i:s",$v['created_at']) }}
+                            {{ $v['created_at'] }}
                         </td>
-                        <td><a href="{{ route('admin.vote.show', $v['id'])}}">
-                        详情</a></td>
+                        <td>
+                            <a href="{{ route('admin.vote.show', $v['id'])}}">
+                            <button class="btn btn-default">详情</button></a>
+
+                            <a href="{{ route('admin.vote.edit', $v['id'])}}">
+                            <button class="btn btn-primary">修改</button></a>
+
+                            <a href="{{ route('admin.vote.delete', $v['id'])}}">
+                            <button class="btn btn-danger">删除</button></a>
+                        </td>
                     </tr>
                     @endforeach
                     @endif

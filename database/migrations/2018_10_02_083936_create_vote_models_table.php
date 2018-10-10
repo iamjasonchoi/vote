@@ -25,7 +25,7 @@ class CreateVoteModelsTable extends Migration
             			->comment('项目海报');
             $table->string('introduce')->nullable()
             			->comment('项目简介');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 		});
 	}
 

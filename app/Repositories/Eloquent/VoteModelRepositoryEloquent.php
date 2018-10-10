@@ -43,9 +43,9 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
     /**
      * NewVoteProject 创建新的投票项目
      * @author leekachung <leekachung17@gmail.com>
-     * @param  [type] $request  [description]
-     * @param  [type] $admin_id [description]
-     * @return [type]           [description]
+     * @param  [Object] $request  [表单信息]
+     * @param  [int] $admin_id [管理员id]
+     * @return [Array / Boolean]
      */
     public function createVoteModel($request, $admin_id)
     {
@@ -61,7 +61,7 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
             'name' => $request->name,
             'start' => strtotime($request->start),
             'end' => strtotime($request->end),
-            'admin_id' => $admin_id
+            'admin_id' => $admin_id,
         ];
 
         return $this->model->insert($data);
@@ -70,8 +70,8 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
     /**
      * ShowVoteList 在首页显示个人的投票项目列表
      * @author leekachung <leekachung17@gmail.com>
-     * @param  [type] $admin_id [description]
-     * @return [type]           [description]
+     * @param  [int] $admin_id [管理员id]
+     * @return
      */
     public function showVoteList($admin_id)
     {
@@ -84,20 +84,61 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
     /**
      * VoteProjectDetail 投票项目详情
      * @author leekachung <leekachung17@gmail.com>
+     * @param  [int] $vote_id  [投票模型id]
+     * @param  [int] $admin_id [管理员id]
+     * @return [type]
+     */
+    public function showVoteDetail($vote_id, $admin_id)
+    {
+
+        //TODO: 访问量 投票总人数 未投票人数
+
+    }
+
+    /**
+     * EditVoteModel 获取修改页面信息
+     * @author leekachung <leekachung17@gmail.com>
      * @param  [type] $vote_id  [description]
      * @param  [type] $admin_id [description]
      * @return [type]           [description]
      */
-    public function showVoteDetail($vote_id, $admin_id)
+    public function editVoteModel($vote_id, $admin_id)
     {
-        if (!$this->model->where([
-            'id' => $vote_id,
-            'admin_id' => $admin_id
-        ])->first()) {
-            return $this->model->
-                ReturnFormat(206, '你没有权限管理这个项目');
-        }
-
+        $res = $this->model->where(['id' => $vote_id])->get();
+        $res[0]['start'] = $this->model
+                            ->dateFormat($res[0]['start']);
+        $res[0]['end'] = $this->model
+                            ->dateFormat($res[0]['end']);
+        return $res[0];
     }
+
+    /**
+     * UpdateVoteModel 修改投票
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $request [description]
+     * @param  [type] $vote_id [description]
+     * @return [type]          [description]
+     */
+    public function updateVoteModel($request, $vote_id, $admin_id)
+    {
+        //判断项目名是否重复
+        if ($this->model->where([
+            ['name', '=', $request->name],
+            ['admin_id', '=', $admin_id],
+            ['id', '<>', $vote_id]
+        ])->first()) {
+            return $this->model->ReturnFormat(206, '项目名重复');
+        }
+        
+        $data = [
+            'name' => $request->name,
+            'start' => strtotime($request->start),
+            'end' => strtotime($request->end),
+        ];
+        $this->model->where(['id' => $vote_id])->update($data);
+
+        return;
+    }
+
     
 }

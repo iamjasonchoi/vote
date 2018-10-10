@@ -8,16 +8,16 @@
         </div>
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">创建一个新的投票项目</div>
+                <div class="panel-heading">修改-{{ $name }}</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('admin.vote.store') }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('admin.vote.update', $id) }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <label for="name" class="col-md-4 control-label">项目名称</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" autocomplete="off" value="{{ old('name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control" name="name" autocomplete="off" value="{{ $name }}" required autofocus>
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -31,7 +31,7 @@
                             <label for="start" class="col-md-4 control-label">开始时间</label>
 
                             <div class="col-md-6">
-                                <input id="start" type="text" class="form-control time-select" autocomplete="off" name="start" value="{{ old('start') }}" required autofocus>
+                                <input id="start" type="text" class="form-control time-select" autocomplete="off" name="start" value="{{ $start }}" required autofocus>
 
                                 @if ($errors->has('start'))
                                     <span class="help-block">
@@ -45,7 +45,7 @@
                             <label for="end" class="col-md-4 control-label">截止时间</label>
 
                             <div class="col-md-6">
-                                <input id="end" type="text" class="form-control time-select" name="end" autocomplete="off" value="{{ old('end') }}" required autofocus>
+                                <input id="end" type="text" class="form-control time-select" name="end" autocomplete="off" value="{{ $end }}" required autofocus>
 
                                 @if ($errors->has('end'))
                                     <span class="help-block">
@@ -60,7 +60,7 @@
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    创建
+                                    修改
                                 </button>
                             </div>
                         </div>

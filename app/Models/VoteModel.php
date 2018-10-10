@@ -23,13 +23,25 @@ class VoteModel extends Model
 
     protected $table = 'vote_model';
 
-    public function ReturnFormat($status, $content=null, $ps=null)
-	{
-		return [
-			'Status' => $status,
-			'Content' => $content,
-			'ps' => $ps
-		];
-	}
+    /**
+     * 禁止自动添加更新时间
+     * @author leekachung <leekachung17@gmail.com>
+     * @return [type] [description]
+     */
+    public function getUpdatedAtColumn()
+    {
+        return null;
+    }
+
+    /**
+     * 时间戳格式化
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $date [description]
+     * @return [type]       [description]
+     */
+    public function dateFormat($date)
+    {
+    	return date('Y-m-d H:i:s', $date);
+    }
 
 }
