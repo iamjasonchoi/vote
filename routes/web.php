@@ -31,15 +31,15 @@ Route::group([
 			->name('admin.logout');
 
 	//Vote && Vote Update && Vote Destroy
-	$router->resource('vote', 'VoteController', 
+	$router->resource('vote', 'VoteModelController', 
 			['names' => 'admin.vote']);
 	$router->post('vote/{vote}', [
             'as' => 'admin.vote.update',
-            'uses' => 'VoteController@update',
+            'uses' => 'VoteModelController@update',
         ]);
 	$router->get('vote/{vote}/delete', [
             'as' => 'admin.vote.delete',
-            'uses' => 'VoteController@destroy',
+            'uses' => 'VoteModelController@destroy',
         ]);
 
 	//Excel

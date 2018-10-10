@@ -23,7 +23,7 @@ use App\Repositories\Eloquent\VoteRepositoryEloquent;
 
 use App\Repositories\Eloquent\VoteRepositoryEloquent as VoteRepository;
 
-class VoteController extends Controller
+class VoteModelController extends Controller
 {
 
 	private $vote_model;
@@ -149,6 +149,10 @@ class VoteController extends Controller
     public function destroy($id)
     {
         $this->vote_model->delete($id);
+        
+        $this->behalf->deleteBehalfGather($id);
+
+        $this->vote->deleteCandidateGather($id);
         
         flash('项目删除成功');
         return back();

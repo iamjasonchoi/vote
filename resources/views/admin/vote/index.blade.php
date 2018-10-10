@@ -62,7 +62,7 @@
                     <button class="btn btn-default">导入模版</button>
                 </a> 
                 <br><br>
-                <p>表格中是否签到/投票 => 1表示已完成， 0表示未完成</p>
+                <p><strong>表格中是否签到/投票 => 1表示已完成， 0表示未完成</strong></p>
                 <table class="table table-bordered table-hover" 
                     id="behalf">
                     <thead>

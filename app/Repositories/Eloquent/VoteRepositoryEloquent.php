@@ -102,5 +102,17 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
         return $this->model->where(['vote_model_id' => $id])
                     ->paginate(9);
     }
+
+    /**
+     * DeleteCandidateGather 清空该项目所有候选人
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function deleteCandidateGather($id)
+    {
+        $this->model->where(['vote_model_id' => $id])->delete();
+        return;
+    }
     
 }
