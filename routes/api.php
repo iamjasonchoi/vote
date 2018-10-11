@@ -18,14 +18,13 @@ $api->version('v1', function ($api) {
 
 	//登录API
 	$api->post('login/{vote_model_id}','App\Http\Controllers\Api\LoginController@login')
-		->name('api.login')
-		->where('vote_model_id', '[0-9]+');
+		->name('api.login')->where('vote_model_id', '[0-9]+');
 
-	$api->group([
-		'middleware' => ''
-	], function ($api) {
+	// $api->group([
+	// 	'middleware' => ''
+	// ], function ($api) {
 
 
-	});
+	// });
          
 });

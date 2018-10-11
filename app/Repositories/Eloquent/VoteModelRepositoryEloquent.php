@@ -135,7 +135,7 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
      */
     public function CreateVoteUrl($id)
     {
-        $url = route('api.login', $id);
+        $url = route('admin.vote.show_vote_url', $id);
         $img_url = 'img/vote_qrcode/xingkongus_' . $id . '.png';
         if (!file_exists(public_path($img_url))) {
             $img_store = QrCode::format('png')->size(666)->encoding('UTF-8')
