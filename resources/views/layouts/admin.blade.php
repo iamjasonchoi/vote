@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>投票系统后台</title>
+    <title>{{ config('view.VOTE_AMDIN_NAME') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -24,7 +24,7 @@
                     <!-- Branding Image -->
                     <a class="navbar-brand" 
                         href="{{ route('admin.index.index') }}">
-                        投票系统后台
+                        {{ config('view.VOTE_AMDIN_NAME') }}
                     </a>
                 </div>
             </div>

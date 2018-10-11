@@ -13,6 +13,8 @@ use App\Models\Behalf;
 
 use App\Validators\BehalfValidator;
 
+use App\Traits\ReturnFormatTrait;
+
 use Excel;
 
 /**
@@ -22,6 +24,8 @@ use Excel;
  */
 class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepository
 {
+    use ReturnFormatTrait;
+
     /**
      * Specify Model class name
      *
@@ -90,6 +94,7 @@ class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepositor
                 ];
             }
             $this->model->insert($storeArr);
+            flash('导入成功');
 
             return;
         });
@@ -198,11 +203,12 @@ class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepositor
      * @author leekachung <leekachung17@gmail.com>
      * @param  [type] $request [description]
      */
-    public function ApiAuth($request)
+    public function ApiAuth($request, $vote_model_id)
     {
         return $this->model->where([
             'name' => $request->name,
-            'student_id' => $request->student_id
+            'student_id' => $request->student_id,
+            'vote_model_id' => $vote_model_id
         ])->first();
     }
 
@@ -219,23 +225,5 @@ class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepositor
 
         return;
     }
-
-/**
- * -------------------------------------------------
- * Use ReturnFormatTrait 调用ReturnFormatTrait单例
- * -------------------------------------------------
- */
-    /**
-     * ReturnJsonResponse
-     * @author leekachung <leekachung17@gmail.com>
-     * @param  [type] $status_code [description]
-     * @param  [type] $messgae     [description]
-     * @param  [type] $token       [description]
-     * @param  [type] $ps          [description]
-     */
-    public function ReturnJsonResponse($status_code, $messgae, $token=null, $ps=null)
-    {
-        return $this->model->ReturnJsonResponse($status_code, $messgae, $token, $ps);
-    }
-
+    
 }

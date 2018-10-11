@@ -11,6 +11,8 @@ use App\Repositories\Contracts\VoteModelRepository;
 
 use App\Models\VoteModel;
 
+use QrCode;
+
 use App\Validators\VoteModelValidator;
 
 use Validator;
@@ -82,20 +84,6 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
     }
 
     /**
-     * VoteProjectDetail 投票项目详情
-     * @author leekachung <leekachung17@gmail.com>
-     * @param  [int] $vote_id  [投票模型id]
-     * @param  [int] $admin_id [管理员id]
-     * @return [type]
-     */
-    public function showVoteDetail($vote_id, $admin_id)
-    {
-
-        //TODO: 访问量 投票总人数 未投票人数
-
-    }
-
-    /**
      * EditVoteModel 获取修改页面信息
      * @author leekachung <leekachung17@gmail.com>
      * @param  [type] $vote_id  [description]
@@ -138,6 +126,25 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
         $this->model->where(['id' => $vote_id])->update($data);
 
         return;
+    }
+
+    /**
+     * CreateVoteUrl 生成投票链接/二维码
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $id [description]
+     */
+    public function CreateVoteUrl($id)
+    {
+        $url = route('api.login', $id);
+        $img_url = 'img/vote_qrcode/xingkongus_' . $id . '.png';
+        if (!file_exists(public_path($img_url))) {
+            $img_store = QrCode::format('png')->size(666)->encoding('UTF-8')
+                ->margin(0)->errorCorrection('H')
+                ->merge('/public/img/xingkongus.png', .3)
+                ->generate($url, $img_url);
+        }
+
+        return [$url, $img_url];
     }
 
     

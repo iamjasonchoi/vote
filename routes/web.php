@@ -17,51 +17,65 @@
 Route::group([
 	'prefix' => 'admin', 
 	'namespace' => 'Admin',
-	'middleware' => ['auth.admin']
+	'middleware' => ['auth.admin'],
+	'as' => 'admin.'
 ],function ($router) {
 
 	//Index
 	$router->resource('/', 'AdminUserController', 
-				['names' => 'admin.index']);
+				['names' => 'index']);
 
 	//Login && Logout
 	$router->match(['get', 'post'], 'index','LoginController@index')
-			->name('admin.login');
+			->name('login');
 	$router->get('logout', 'LoginController@logout')
-			->name('admin.logout');
+			->name('logout');
 
-	//Vote && Vote Update && Vote Destroy
+	//Vote && Vote Update && Vote Destroy && Show Vote Url
 	$router->resource('vote', 'VoteModelController', 
-			['names' => 'admin.vote']);
+			['names' => 'vote']);
 	$router->post('vote/{vote}', [
-            'as' => 'admin.vote.update',
+            'as' => 'vote.update',
             'uses' => 'VoteModelController@update',
-        ]);
+        ])->where('vote', '[0-9]+');
 	$router->get('vote/{vote}/delete', [
-            'as' => 'admin.vote.delete',
+            'as' => 'vote.delete',
             'uses' => 'VoteModelController@destroy',
-        ]);
+        ])->where('vote', '[0-9]+');
+	$router->get('{vote}/show_vote_url', [
+            'as' => 'vote.show_vote_url',
+            'uses' => 'VoteModelController@ShowVoteUrl',
+        ])->where('vote', '[0-9]+');
 
 	//Excel
-	$router::group(['prefix' => 'excel'], function ($excel)
-	{
+	$router::group([
+		'prefix' => 'excel', 'as' => 'excel.'
+	], function ($excel) {
 		//Export Model
 		$excel->get('export_model/{type}', 
 			'ExcelController@export_type')
-				->name('excel.model.export');
-
+				->name('model.export')
+				->where('type', '[0-9]+');
 		//Import && Import Index
 		$excel->get('import/{vote}/{type}',
 			 'ExcelController@importIndex')
-				->name('excel.import.index');
+				->name('import.index')
+				->where([
+					'vote' => '[0-9]+',
+					'type' => '[0-9]+'
+				]);
 		$excel->post('import/{vote}/{type}', 
 			'ExcelController@getExcelFile')
-				->name('excel.import');
+				->name('import')
+				->where([
+					'vote' => '[0-9]+',
+					'type' => '[0-9]+'
+				]);;
 
 	});
 
 	//Member
 	$router->resource('member', 'MemberController', 
-					['names' => 'admin.member']);
+					['names' => 'member']);
 
 });

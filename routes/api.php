@@ -15,6 +15,17 @@ use Illuminate\Http\Request;
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
-         $api->post('login', 
-         	'App\Http\Controllers\Api\LoginController@login');
+
+	//登录API
+	$api->post('login/{vote_model_id}','App\Http\Controllers\Api\LoginController@login')
+		->name('api.login')
+		->where('vote_model_id', '[0-9]+');
+
+	$api->group([
+		'middleware' => ''
+	], function ($api) {
+
+
+	});
+         
 });

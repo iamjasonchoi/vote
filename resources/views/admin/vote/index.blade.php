@@ -38,10 +38,10 @@
         <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    实时票数详情
+                    生成投票链接/二维码
                 </div>
                 <div class="panel-body">
-                    <h2><strong>123</strong></h2>
+                    <a href="{{ route('admin.vote.show_vote_url', $id) }}"><h2><strong>点击生成</strong></h2></a>
                 </div>
             </div>
         </div>
@@ -55,10 +55,10 @@
                 <a href="{{ route('admin.member.index', 1) }}">
                     <button class="btn btn-default">新增代表</button>
                 </a>
-                <a href="{{ route('excel.import.index', [$id, 1])}}">
+                <a href="{{ route('admin.excel.import.index', [$id, 1])}}">
                     <button class="btn btn-default">导入代表</button>
                 </a>
-                <a href="{{ route('excel.model.export', 1) }}">
+                <a href="{{ route('admin.excel.model.export', 1) }}">
                     <button class="btn btn-default">导入模版</button>
                 </a> 
                 <br><br>
@@ -109,10 +109,10 @@
                 <a href="{{ route('admin.member.index') }}">
                     <button class="btn btn-default">新增候选人</button>
                 </a>
-                <a href="{{ route('excel.import.index', [$id, 0]) }}">
+                <a href="{{ route('admin.excel.import.index', [$id, 0]) }}">
                     <button class="btn btn-default">导入候选人</button>
                 </a>
-                <a href="{{ route('excel.model.export', 0) }}">
+                <a href="{{ route('admin.excel.model.export', 0) }}">
                     <button class="btn btn-default">导入模版</button>
                 </a>
                 <br><br>

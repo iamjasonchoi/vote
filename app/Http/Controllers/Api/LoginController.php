@@ -28,23 +28,24 @@ class LoginController extends Controller
 	}
 
 	/**
-	 * Login && Sign 代表签到模块
-	 * @author leekachung <leekachung17@gmail.com>
-	 * @param  ApiAuthRequest $request [description]
-	 * @return [type]                  [description]
-	 */
-    public function login(ApiAuthRequest $request)
+     * Login && Sign 代表签到模块
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  ApiAuthRequest $request       [description]
+     * @param  [type]         $vote_model_id [description]
+     * @return [type]                        [description]
+     */
+    public function login(ApiAuthRequest $request, $vote_model_id)
     {
-    	$user = $this->behalf->ApiAuth($request);
+    	$user = $this->behalf->ApiAuth($request, $vote_model_id);
     	if ($user) {
     		$this->behalf->signBehalf($user->id); //登录自动签到
     		$token = JWTAuth::fromUser($user); //获取token
     		
     		return $this->behalf->ReturnJsonResponse(
-    			200, 'User Authenticated', $token, 'Bearer '
+    			200, '签到成功', $token, 'Bearer '
     		);
     	} else {
-    		return $this->behalf->ReturnJsonResponse(206, 'unauthorized');
+    		return $this->behalf->ReturnJsonResponse(206, '权限不允许操作');
     	}
     }
 

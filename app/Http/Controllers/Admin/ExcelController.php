@@ -120,7 +120,6 @@ class ExcelController extends Controller
             flash('未允许操作')->error();
             return back();
         }
-        flash('导入成功');
         return;
     }
 

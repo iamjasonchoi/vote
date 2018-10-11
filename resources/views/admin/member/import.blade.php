@@ -10,7 +10,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{{ $model }}</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('excel.import', [$vote_model_id, $type]) }}" enctype="multipart/form-data">
+                    <form class="form-horizontal" method="POST" action="{{ route('admin.excel.import', [$vote_model_id, $type]) }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('file') ? ' has-error' : '' }}">

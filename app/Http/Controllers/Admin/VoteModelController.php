@@ -34,7 +34,7 @@ class VoteModelController extends Controller
         VoteRepository $VoteRepository)
     {
         $this->middleware('auth.votemodel')
-                ->only(['show', 'edit', 'destroy']);
+                ->only(['show', 'edit', 'destroy', 'ShowVoteUrl']);
         $this->vote_model = $VoteModelRepository;
         $this->behalf = $BehalfRepository;
         $this->vote = $VoteRepository;
@@ -90,9 +90,6 @@ class VoteModelController extends Controller
      */
     public function show($id)
     {
-    	$res = $this->vote_model->
-    		showVoteDetail($id, Auth::user()->id);
-
         $signnum = $this->behalf->showSignNum($id);
 
         $votepeople = $this->behalf->showVotePeople($id);
@@ -158,6 +155,16 @@ class VoteModelController extends Controller
         return back();
     }
 
+    /**
+     * ShowVoteUrl 展示投票链接/二维码
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $id [description]
+     */
+    public function ShowVoteUrl($id)
+    {
+        $res = $this->vote_model->CreateVoteUrl($id);
 
+        return view('admin.vote.qrcode', compact('res'));
+    }
 
 }
