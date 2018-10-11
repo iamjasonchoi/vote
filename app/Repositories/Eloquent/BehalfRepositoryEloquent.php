@@ -40,6 +40,11 @@ class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepositor
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+/**
+ * -------------------------------------------------
+ * Excel 操作
+ * -------------------------------------------------
+ */
     /**
      * ImportExcel 代表批量导入
      * @author leekachung <leekachung17@gmail.com>
@@ -120,6 +125,11 @@ class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepositor
         })->export($format);
     }
 
+/**
+ * -------------------------------------------------
+ * ShowBehalf && DeleteBehalf 代表显示&&清空代表
+ * -------------------------------------------------
+ */
     /**
      * ShowBehalfList 显示代表列表
      * @author leekachung <leekachung17@gmail.com>
@@ -176,6 +186,56 @@ class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepositor
     {
         $this->model->where(['vote_model_id' => $id])->delete();
         return;
+    }
+
+/**
+ * -------------------------------------------------
+ * API 返回前端数据
+ * -------------------------------------------------
+ */
+    /**
+     * ApiLoginAuth Api登录
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $request [description]
+     */
+    public function ApiAuth($request)
+    {
+        return $this->model->where([
+            'name' => $request->name,
+            'student_id' => $request->student_id
+        ])->first();
+    }
+
+    /**
+     * Sign Api签到 登录默认签到
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $behalf_id [description]
+     * @return [type]            [description]
+     */
+    public function signBehalf($behalf_id)
+    {
+        $this->model->where(['id' => $behalf_id])
+            ->update(['is_sign' => 1]);
+
+        return;
+    }
+
+/**
+ * -------------------------------------------------
+ * Use ReturnFormatTrait 调用ReturnFormatTrait单例
+ * -------------------------------------------------
+ */
+    /**
+     * ReturnJsonResponse
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $status_code [description]
+     * @param  [type] $messgae     [description]
+     * @param  [type] $token       [description]
+     * @param  [type] $ps          [description]
+     */
+    public function ReturnJsonResponse($status_code, $messgae, $token=null, $ps=null)
+    {
+        return $this->model->ReturnJsonResponse($status_code, $messgae, $token, $ps);
     }
 
 }

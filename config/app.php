@@ -187,6 +187,12 @@ return [
          */
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
 
+        /**
+         * RESTful
+         */
+        Dingo\Api\Provider\LaravelServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class
+
     ],
 
     /*
@@ -240,6 +246,12 @@ return [
          * Excel
          */
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+        /**
+         * RESTful
+         */
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class
 
     ],
 

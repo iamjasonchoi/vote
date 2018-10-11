@@ -8,9 +8,9 @@ trait ReturnFormatTrait
 	/**
 	 * ReturnFormat
 	 * @author leekachung <leekachung17@gmail.com>
-	 * @param  [Int] $status  [返回状态码]
-	 * @param  [String] $content [返回内容]
-	 * @param  [String] $ps      [返回补充内容]
+	 * @param  [type] $status  [description]
+	 * @param  [type] $content [description]
+	 * @param  [type] $ps      [description]
 	 */
 	public function ReturnFormat($status, $content=null, $ps=null)
 	{
@@ -20,4 +20,26 @@ trait ReturnFormatTrait
 			'ps' => $ps
 		];
 	}
+
+	/**
+	 * ReturnJsonResponse
+	 * @author leekachung <leekachung17@gmail.com>
+	 * @param  [Int] $status_code [返回状态码]
+	 * @param  [String] $messgae     [返回信息]
+	 * @param  [String] $token       [返回token]
+	 * @param  [String] $ps          [返回补充信息]
+	 */
+	public function ReturnJsonResponse(
+		$status_code, $messgae, $token=null, $ps=null)
+	{
+		$param = [
+			'status_code' => $status_code,
+			'messgae' => $messgae,
+			'_token' => $token,
+			'ps' => $ps
+		];
+		return response()->json($param);
+	}
+
+
 }

@@ -32,8 +32,6 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
         return Vote::class;
     }
 
-    
-
     /**
      * Boot up the repository, pushing criteria
      */
@@ -42,6 +40,11 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+/**
+ * -------------------------------------------------
+ * Excel 操作
+ * -------------------------------------------------
+ */
     /**
      * ImportExcel 候选人批量导入
      * @author leekachung <leekachung17@gmail.com>
@@ -91,6 +94,11 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
         }); 
     }
 
+/**
+ * ----------------------------------------------------
+ * ShowCandidate && DeleteCandidate 显示候选人&&清空候选人 
+ * ----------------------------------------------------
+ */
     /**
      * ShowCandidateList 显示候选人列表
      * @author leekachung <leekachung17@gmail.com>
@@ -114,5 +122,11 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
         $this->model->where(['vote_model_id' => $id])->delete();
         return;
     }
+
+/**
+ * -------------------------------------------------
+ * Api 返回前端数据
+ * -------------------------------------------------
+ */
     
 }

@@ -64,5 +64,4 @@ Route::group([
 	$router->resource('member', 'MemberController', 
 					['names' => 'admin.member']);
 
-
 });

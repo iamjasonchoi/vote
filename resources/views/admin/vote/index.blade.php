@@ -52,7 +52,7 @@
                 代表管理
             </div>
             <div class="panel-body">
-                <a href="{{ route('admin.member.index') }}">
+                <a href="{{ route('admin.member.index', 1) }}">
                     <button class="btn btn-default">新增代表</button>
                 </a>
                 <a href="{{ route('excel.import.index', [$id, 1])}}">
@@ -62,7 +62,7 @@
                     <button class="btn btn-default">导入模版</button>
                 </a> 
                 <br><br>
-                <p><strong>表格中是否签到/投票 => 1表示已完成， 0表示未完成</strong></p>
+                <p><strong>表格中是否签到/投票 => 1表示已完成, 0表示未完成</strong></p>
                 <table class="table table-bordered table-hover" 
                     id="behalf">
                     <thead>
