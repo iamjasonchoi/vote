@@ -48,16 +48,16 @@
             
       参数说明: 
      
-      | 参数名称 | 参数说明 |
-    | --- | --- |
-    | VoteModelID | **URL参数** 投票项目ID<br>扫码进入投票自动获取 |
+       参数名称 | 参数说明 
+     --- | --- 
+     VoteModelID | **URL参数** 投票项目ID<br>扫码进入投票自动获取 
      
       返回状态码及返回参数 [**JSON格式**]:
     
-      | status_code | 返回参数 | 返回状态说明 |
-    | --- | --- | --- |
-    | 200 | status_code: **200** <br>message: **VoteModelID**<br>ps: **投票项目名**  | 前端跳转登录页面<br>保留VoteModelID |
-    | 500 | 无 | 表单数据格式有误或其他问题 |
+       status_code | 返回参数 | 返回状态说明 
+     --- | --- | --- 
+     200 | status_code: **200** <br>message: **VoteModelID**<br>ps: **投票项目名**  | 前端跳转登录页面<br>保留VoteModelID 
+     500 | 无 | 表单数据格式有误或其他问题 
 
     - 签到
      
@@ -67,18 +67,20 @@
      
       参数说明: 
      
-      | 参数名称 | 参数说明 |
-    | --- | --- |
-    | VoteModelID | 投票项目ID<br>扫码进入投票自动获取 |
-    | name | 代表姓名 |
-    | student_id | 代表学号 适用于华广学生学号 |
+       参数名称 | 参数说明 
+     --- | --- 
+     VoteModelID | 投票项目ID<br>扫码进入投票自动获取 
+     name | 代表姓名 
+     student_id | 代表学号 适用于华广学生学号 
+     
       返回状态码及返回参数 [**JSON格式**]:
     
-      | status_code | 返回参数 | 返回状态说明 |
-    | --- | --- | --- |
-    | 200 | status_code: **200** <br>message: **签到成功**<br>_token: **Token**<br>ps: **Bearer**  | 代表签到成功<br>Token值有效时间`2h` |
-    | 206 | message: **权限不允许操作** | 该代表不属于该投票项目 |
-    | 500 | 无 | 表单数据格式有误或其他问题 |
+       status_code | 返回参数 | 返回状态说明 
+     --- | --- | --- 
+     200 | status_code: **200** <br>message: **签到成功**<br>_token: **Token**<br>ps: **Bearer**  | 代表签到成功<br>Token值有效时间`2h` 
+     206 | message: **权限不允许操作** | 该代表不属于该投票项目 
+     500 | 无 | 表单数据格式有误或其他问题 
+     
             后续操作API 需在Header添加： Authorization: ps + _token
             
     - 展示候选人列表
@@ -89,12 +91,12 @@
         
       返回状态码及返回参数 [**JSON格式**]:
     
-      | status_code | 返回参数 | 返回状态说明 |
-    | --- | --- | --- |
-    | 200 | status_code: **200** <br>message: **候选人列表** | 获取成功 |
-    | 401 | "请签到"(String) | token失效<br>提醒用户重新登录 |
-    | 404 | 无 | 请求URL有误 |
-    | 500 | 无 | 表单数据格式有误或其他问题 |
+       status_code | 返回参数 | 返回状态说明 
+     --- | --- | --- 
+     200 | status_code: **200** <br>message: **候选人列表** | 获取成功 
+     401 | "请签到"(String) | token失效<br>提醒用户重新登录 
+     404 | 无 | 请求URL有误 
+     500 | 无 | 表单数据格式有误或其他问题 
 
         
         
