@@ -16,15 +16,25 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
 
+	//跳转投票API
+	$api->get('vote/{vote_model_id}', 
+		[
+			'as' => 'vote.index',
+			'uses' => 'App\Http\Controllers\Api\LoginController@Index'
+		])
+		->where('vote_model_id', '[0-9]+');
+
 	//登录API
-	$api->post('login/{vote_model_id}','App\Http\Controllers\Api\LoginController@login')
-		->name('api.login')->where('vote_model_id', '[0-9]+');
+	$api->post('login',
+		'App\Http\Controllers\Api\LoginController@Login');
 
-	// $api->group([
-	// 	'middleware' => ''
-	// ], function ($api) {
+	$api->get('test', 
+		'App\Http\Controllers\Api\LoginController@getAuthenticatedUser')
+	->middleware('token.refresh');
 
-
-	// });
+	//展示候选人API
+	$api->get('show', 
+		'App\Http\Controllers\Api\VoteController@showCandidateList')
+	->middleware('token.refresh');
          
 });

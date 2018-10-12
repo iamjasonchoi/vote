@@ -58,6 +58,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'auth.admin' => \App\Http\Middleware\AdminAuth::class,
-        'auth.votemodel' => \App\Http\Middleware\VoteModelAuth::class
+        'auth.votemodel' => \App\Http\Middleware\VoteModelAuth::class,
+        'token.refresh' => \App\Http\Middleware\RefreshToken::class
     ];
 }

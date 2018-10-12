@@ -15,18 +15,24 @@ use Illuminate\Notifications\Notifiable;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+use Illuminate\Auth\Authenticatable;
+
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+
 /**
  * Class Behalf.
  *
  * @package namespace App\Models;
  */
-class Behalf extends Model implements Transformable, JWTSubject
+class Behalf extends Model implements Transformable, JWTSubject, AuthenticatableContract
 {
     use TransformableTrait;
 
     use Notifiable;
 
     use ReturnFormatTrait;
+
+    use Authenticatable;
 
     /**
      * The attributes that are mass assignable.

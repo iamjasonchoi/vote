@@ -43,7 +43,7 @@ return [
 
         'api' => [
             'driver' => 'jwt',
-            'provider' => 'users',
+            'provider' => 'behalf',
         ],
 
         'admin' => [
@@ -74,13 +74,19 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Behalf::class,
+            'model' => App\Models\User::class,
         ],
 
         'admin' => [
             'driver' => 'eloquent',
             'model' => App\Models\AdminUser::class,
             'table' => 'admin',
+        ],
+
+        'behalf' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Behalf::class,
+            'table' => 'behalf',
         ],
 
         // 'users' => [

@@ -203,12 +203,12 @@ class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepositor
      * @author leekachung <leekachung17@gmail.com>
      * @param  [type] $request [description]
      */
-    public function ApiAuth($request, $vote_model_id)
+    public function ApiAuth($request)
     {
         return $this->model->where([
             'name' => $request->name,
             'student_id' => $request->student_id,
-            'vote_model_id' => $vote_model_id
+            'vote_model_id' => $request->vote_model_id
         ])->first();
     }
 

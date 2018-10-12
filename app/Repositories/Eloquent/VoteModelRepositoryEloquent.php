@@ -13,6 +13,8 @@ use App\Models\VoteModel;
 
 use QrCode;
 
+use App\Traits\ReturnFormatTrait;
+
 use App\Validators\VoteModelValidator;
 
 use Validator;
@@ -24,6 +26,8 @@ use Validator;
  */
 class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRepository
 {
+    use ReturnFormatTrait;
+
     /**
      * Specify Model class name
      *
@@ -42,6 +46,11 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
         $this->pushCriteria(app(RequestCriteria::class));
     }
 
+/**
+ * ---------------------------------
+ * CurdVoteProject  投票管理
+ * ---------------------------------
+ */
     /**
      * NewVoteProject 创建新的投票项目
      * @author leekachung <leekachung17@gmail.com>
@@ -128,6 +137,11 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
         return;
     }
 
+/**
+ * -----------------------------------------------
+ * VoteHref && VoteQRcode 投票链接 && 投票二维码
+ * -----------------------------------------------
+ */
     /**
      * CreateVoteUrl 生成投票链接/二维码
      * @author leekachung <leekachung17@gmail.com>
@@ -135,7 +149,8 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
      */
     public function CreateVoteUrl($id)
     {
-        $url = route('admin.vote.show_vote_url', $id);
+        $url = app('Dingo\Api\Routing\UrlGenerator')->version('v1')
+                ->route('vote.index', $id);
         $img_url = 'img/vote_qrcode/xingkongus_' . $id . '.png';
         if (!file_exists(public_path($img_url))) {
             $img_store = QrCode::format('png')->size(666)->encoding('UTF-8')
@@ -145,6 +160,23 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
         }
 
         return [$url, $img_url];
+    }
+
+
+/**
+ * --------------------------
+ * API 返回前端数据
+ * --------------------------
+ */
+    /**
+     * showVoteMes 返回投票初始内容
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function showVoteMes($id)
+    {
+        return $this->model->where(['id' => $id])->value('name');
     }
 
     

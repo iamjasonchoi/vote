@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 use App\Repositories\Eloquent\BehalfRepositoryEloquent;
 
 use App\Repositories\Eloquent\BehalfRepositoryEloquent as BehalfRepository;
@@ -31,7 +33,8 @@ class VoteController extends Controller
 
     public function showCandidateList()
     {
-    	
+        return JWTAuth::getToken();
+        
     }
 
 }

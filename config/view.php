@@ -30,6 +30,6 @@ return [
 
     'compiled' => realpath(storage_path('framework/views')),
 
-    'VOTE_AMDIN_NAME' => '星投票后台 [星空学生创新中心-技术支持]',
+    'VOTE_AMDIN_NAME' => '星投票后台 | 星空学生创新中心-技术支持',
 
 ];
