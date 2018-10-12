@@ -17,7 +17,8 @@
 | 后台登录 | 登录后台验证身份 | 关联数据表 `admin` <br /> 输入用户名密码共错误三次 等待24h |
 | 设置新投票 | 新建一个投票项目 <br> **必填:** `项目名/项目时效`<br>选填：`项目简介/项目封面`| 关联数据表 `vote_model` |
 | 代表录入 | Excel批量导入代表信息 `姓名/学号` | 关联数据表 `behalf` |
-| 未投票 | 显示未投票代表 | 关联数据表 `behalf` |  
+| 未投票 | 显示未投票代表 | 关联数据表 `behalf` |
+| 搜索代表 | 搜索代表是否存在 &&<br>查看代表详情 | 关联数据表 `behalf`  
 
 - 其他需求
 
@@ -38,69 +39,10 @@
 | laracasts/flash | 优化提示信息 |
 
 
-- **API**
+- **API文档**
 
-    - 投票初始化
-
-      请求URL: URL + /vote/ + VoteModelID
-            
-      请求方式: `GET`
-            
-      参数说明: 
-     
-       参数名称 | 参数说明 
-     --- | --- 
-     VoteModelID | **URL参数** 投票项目ID<br>扫码进入投票自动获取 
-     
-      返回状态码及返回参数 [**JSON格式**]:
-    
-       status_code | 返回参数 | 返回状态说明 
-     --- | --- | --- 
-     200 | status_code: **200** <br>message: **VoteModelID**<br>ps: **投票项目名**  | 前端跳转登录页面<br>保留VoteModelID 
-     500 | 无 | 表单数据格式有误或其他问题 
-
-    - 签到
-     
-      请求URL: URL + /login
-     
-      请求方式: `POST`
-     
-      参数说明: 
-     
-       参数名称 | 参数说明 
-     --- | --- 
-     VoteModelID | 投票项目ID<br>扫码进入投票自动获取 
-     name | 代表姓名 
-     student_id | 代表学号 适用于华广学生学号 
-     
-      返回状态码及返回参数 [**JSON格式**]:
-    
-       status_code | 返回参数 | 返回状态说明 
-     --- | --- | --- 
-     200 | status_code: **200** <br>message: **签到成功**<br>_token: **Token**<br>ps: **Bearer**  | 代表签到成功<br>Token值有效时间`2h` 
-     206 | message: **权限不允许操作** | 该代表不属于该投票项目 
-     500 | 无 | 表单数据格式有误或其他问题 
-     
-            后续操作API 需在Header添加： Authorization: ps + _token
-            
-    - 展示候选人列表
-        
-      请求URL: URL + /show
-        
-      请求方式: `GET`
-        
-      返回状态码及返回参数 [**JSON格式**]:
-    
-       status_code | 返回参数 | 返回状态说明 
-     --- | --- | --- 
-     200 | status_code: **200** <br>message: **候选人列表** | 获取成功 
-     401 | "请签到"(String) | token失效<br>提醒用户重新登录 
-     404 | 无 | 请求URL有误 
-     500 | 无 | 表单数据格式有误或其他问题 
-
-        
-        
-   
- 
+  因为表格缩进兼容问题不放在github展示
   
+  可跳转Blog查看
   
+  **[API文档（尚在补充，未开放）](http://leekachung.cn/vote_api_manual.html)**

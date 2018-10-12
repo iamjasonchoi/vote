@@ -32,6 +32,10 @@ $api->version('v1', function ($api) {
 		//展示候选人API
 		$api->get('show', 
 			'App\Http\Controllers\Api\VoteController@getCandidateList');
+
+		//投票API
+		$api->post('vote', 
+			'App\Http\Controllers\Api\VoteController@vote');
 	});
 	
          

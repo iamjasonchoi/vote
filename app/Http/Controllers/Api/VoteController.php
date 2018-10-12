@@ -9,6 +9,10 @@ use App\Http\Controllers\Controller;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 
+use Illuminate\Database\QueryException;
+
+use DB;
+
 use App\Repositories\Eloquent\BehalfRepositoryEloquent;
 
 use App\Repositories\Eloquent\BehalfRepositoryEloquent as BehalfRepository;
@@ -31,10 +35,40 @@ class VoteController extends Controller
     	$this->vote = $VoteRepository;
     }
 
+    /**
+     * getCandidateList 获取候选人列表
+     * @author leekachung <leekachung17@gmail.com>
+     * @return [type] [description]
+     */
     public function getCandidateList()
     {
         $vote_model_id = auth('api')->user()->vote_model_id;
-        return $this->vote->ReturnJsonResponse(200, $this->vote->getCandidateList($vote_model_id));
+
+        return $this->vote->ReturnJsonResponse(
+            200, $this->vote->getCandidateList($vote_model_id)
+        );
+    }
+
+    public function vote(Request $request)
+    {
+        $vote_model_id = auth('api')->user()->vote_model_id;
+        //开启事务
+        DB::beginTransaction();
+        try {
+
+            $this->vote->vote($request, $vote_model_id);
+            DB::commit();
+
+        } catch (QueryException $e) {
+
+            DB::rollback();
+            return $this->vote->ReturnJsonResponse(
+                206, '投票失败，请重试'
+            );
+
+        }
+
+        return $this->vote->ReturnJsonResponse(200, '投票成功');
     }
 
 }
