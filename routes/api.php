@@ -28,13 +28,11 @@ $api->version('v1', function ($api) {
 	$api->post('login',
 		'App\Http\Controllers\Api\LoginController@Login');
 
-	$api->get('test', 
-		'App\Http\Controllers\Api\LoginController@getAuthenticatedUser')
-	->middleware('token.refresh');
-
-	//展示候选人API
-	$api->get('show', 
-		'App\Http\Controllers\Api\VoteController@showCandidateList')
-	->middleware('token.refresh');
+	$api->group(['middleware' => 'token.refresh'], function ($api) {
+		//展示候选人API
+		$api->get('show', 
+			'App\Http\Controllers\Api\VoteController@showCandidateList');
+	});
+	
          
 });

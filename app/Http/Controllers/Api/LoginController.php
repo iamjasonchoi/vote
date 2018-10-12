@@ -70,12 +70,4 @@ class LoginController extends Controller
     	}
     }
 
-    public function getAuthenticatedUser()
-    {
-        return 123;
-        
-        // the token is valid and we have found the user via the sub claim
-        //return response()->json(compact('user'));
-    }
-
 }

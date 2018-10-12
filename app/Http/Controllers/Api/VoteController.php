@@ -33,7 +33,7 @@ class VoteController extends Controller
 
     public function showCandidateList()
     {
-        return JWTAuth::getToken();
+        $vote_model_id = auth('api')->user()->vote_model_id;
         
     }
 
