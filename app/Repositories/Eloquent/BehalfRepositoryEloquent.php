@@ -225,5 +225,19 @@ class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepositor
 
         return;
     }
+
+    /**
+     * checkVote 确认代表投票
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $behalf_id [description]
+     * @return [type]            [description]
+     */
+    public function checkVote($behalf_id)
+    {
+        $this->model->where(['id' => $behalf_id])
+            ->update(['is_vote' => 1]);
+
+        return;
+    }
     
 }

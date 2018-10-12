@@ -49,23 +49,29 @@ class VoteController extends Controller
         );
     }
 
+    /**
+     * Vote 投票
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function vote(Request $request)
     {
-        $vote_model_id = auth('api')->user()->vote_model_id;
+        $auth = auth('api')->user();
         //开启事务
         DB::beginTransaction();
         try {
-
-            $this->vote->vote($request, $vote_model_id);
+            //候选人票数增加
+            $this->vote->vote($request, $auth->vote_model_id);
+            //确认代表投票
+            $this->behalf->checkVote($auth->id);
             DB::commit();
-
         } catch (QueryException $e) {
-
             DB::rollback();
+
             return $this->vote->ReturnJsonResponse(
                 206, '投票失败，请重试'
             );
-
         }
 
         return $this->vote->ReturnJsonResponse(200, '投票成功');

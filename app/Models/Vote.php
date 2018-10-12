@@ -26,4 +26,14 @@ class Vote extends Model implements Transformable
 
     public $timestamp = false;
 
+    /**
+     * 禁止自动添加更新时间
+     * @author leekachung <leekachung17@gmail.com>
+     * @return [type] [description]
+     */
+    public function getUpdatedAtColumn()
+    {
+        return null;
+    }
+
 }

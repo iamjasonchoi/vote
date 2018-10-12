@@ -144,16 +144,22 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
                     ->get();
     }
     
+    /**
+     * vote 投票
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $request       [description]
+     * @param  [type] $vote_model_id [description]
+     * @return [type]                [description]
+     */
     public function vote($request, $vote_model_id)
     {
-        // $voteArr = $request->name;
-        // return $voteArr;
-        // foreach ($voteArr as $key => $value) {
-        //     $vote_num = $this->model->where([
-        //         'vote_model_id' => $vote_model_id,
-        //         'id' => $value
-        //     ]);
-        //     $vote_num->increment('vote_num');
-        // }
+        $voteArr = explode(',', $request->name);
+
+        foreach ($voteArr as $key => $value) {
+            $this->model->where([
+                'vote_model_id' => $vote_model_id,
+                'id' => $value
+            ])->increment('vote_num');
+        }
     }
 }
