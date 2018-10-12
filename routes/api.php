@@ -31,7 +31,7 @@ $api->version('v1', function ($api) {
 	$api->group(['middleware' => 'token.refresh'], function ($api) {
 		//展示候选人API
 		$api->get('show', 
-			'App\Http\Controllers\Api\VoteController@showCandidateList');
+			'App\Http\Controllers\Api\VoteController@getCandidateList');
 	});
 	
          

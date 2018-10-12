@@ -31,10 +31,10 @@ class VoteController extends Controller
     	$this->vote = $VoteRepository;
     }
 
-    public function showCandidateList()
+    public function getCandidateList()
     {
         $vote_model_id = auth('api')->user()->vote_model_id;
-        
+        return $this->vote->ReturnJsonResponse(200, $this->vote->getCandidateList($vote_model_id));
     }
 
 }

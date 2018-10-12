@@ -13,6 +13,8 @@ use App\Models\Vote;
 
 use App\Validators\VoteValidator;
 
+use App\Traits\ReturnFormatTrait;
+
 use Excel;
 
 /**
@@ -22,6 +24,9 @@ use Excel;
  */
 class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
 {
+
+    use ReturnFormatTrait;
+    
     /**
      * Specify Model class name
      *
@@ -127,6 +132,16 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
  * -------------------------------------------------
  * Api 返回前端数据
  * -------------------------------------------------
- */
+ *//**
+     * getCandidateList 获取候选人列表
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function getCandidateList($id)
+    {
+        return $this->model->where(['vote_model_id' => $id])
+                    ->get();
+    }
     
 }
