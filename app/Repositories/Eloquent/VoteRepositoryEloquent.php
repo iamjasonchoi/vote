@@ -15,6 +15,8 @@ use App\Validators\VoteValidator;
 
 use App\Traits\ReturnFormatTrait;
 
+use App\Traits\DoQueueTrait;
+
 use Excel;
 
 /**
@@ -26,6 +28,8 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
 {
 
     use ReturnFormatTrait;
+
+    use DoQueueTrait;
     
     /**
      * Specify Model class name
@@ -145,13 +149,13 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
     }
     
     /**
-     * vote 投票
+     * voteNow 投票
      * @author leekachung <leekachung17@gmail.com>
      * @param  [type] $request       [description]
      * @param  [type] $vote_model_id [description]
      * @return [type]                [description]
      */
-    public function vote($request, $vote_model_id)
+    public function voteNow($request, $vote_model_id)
     {
         $voteArr = explode(',', $request->name);
 

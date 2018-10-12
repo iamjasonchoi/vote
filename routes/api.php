@@ -16,27 +16,36 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
 
-	//跳转投票API
-	$api->get('vote/{vote_model_id}', 
-		[
-			'as' => 'vote.index',
-			'uses' => 'App\Http\Controllers\Api\LoginController@Index'
-		])
-		->where('vote_model_id', '[0-9]+');
+	$api->group(['middleware' => 'check.status'], function ($api) {
 
-	//登录API
-	$api->post('login',
-		'App\Http\Controllers\Api\LoginController@Login');
+		//投票初始化API
+		$api->get('vote/{vote_model_id}', 
+			[
+				'as' => 'vote.index',
+				'uses' => 'App\Http\Controllers\Api\LoginController@Index'
+			])
+			->where('vote_model_id', '[0-9]+');
 
-	$api->group(['middleware' => 'token.refresh'], function ($api) {
-		//展示候选人API
-		$api->get('show', 
-			'App\Http\Controllers\Api\VoteController@getCandidateList');
+		//登录API
+		$api->post('login',
+			'App\Http\Controllers\Api\LoginController@Login');
 
-		//投票API
-		$api->post('vote', 
-			'App\Http\Controllers\Api\VoteController@vote');
-	});
-	
+		/**
+		 * -------------------------
+		 * 签到后操作
+		 * -------------------------
+		 */
+		$api->group(['middleware' => 'token.refresh'], function ($api) {
+
+			//展示候选人API
+			$api->get('show', 
+				'App\Http\Controllers\Api\VoteController@getCandidateList');
+
+			//投票API
+			$api->post('vote', 
+				'App\Http\Controllers\Api\VoteController@vote');
+		
+		});
+	});	
          
 });

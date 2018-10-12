@@ -57,8 +57,11 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'auth.admin' => \App\Http\Middleware\AdminAuth::class,
-        'auth.votemodel' => \App\Http\Middleware\VoteModelAuth::class,
-        'token.refresh' => \App\Http\Middleware\RefreshToken::class
+        //admin
+        'auth.admin' => \App\Http\Middleware\Admin\AdminAuth::class,
+        'auth.votemodel' => \App\Http\Middleware\Admin\VoteModelAuth::class,
+        //Api
+        'token.refresh' => \App\Http\Middleware\Api\RefreshToken::class,
+        'check.status' => \App\Http\Middleware\Api\CheckStatus::class
     ];
 }
