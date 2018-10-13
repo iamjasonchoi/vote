@@ -115,7 +115,11 @@
                 <a href="{{ route('admin.excel.model.export', 0) }}">
                     <button class="btn btn-default">导入模版</button>
                 </a>
+                <a href="{{ route('admin.flush.cache') }}">
+                    <button class="btn btn-danger">清空缓存</button>
+                </a>
                 <br><br>
+                <p><strong>修改参与投票的候选人后, 记得清空缓存</strong></p>
                 <table class="table table-bordered table-hover" 
                     id="vote">
                     <thead>

@@ -12,6 +12,14 @@
 */
 
 /**
+ * API
+ */
+//投票初始化API 分发投票项目功能
+Route::get('vote/{vote_model_id}', 'Admin\VoteModelController@initApi')
+	->where('vote_model_id', '[0-9]+')->name('vote.qrcode')
+	->middleware('set.status');
+
+/**
  * 后台管理
  */
 Route::group([
@@ -46,6 +54,12 @@ Route::group([
             'as' => 'vote.show_vote_url',
             'uses' => 'VoteModelController@ShowVoteUrl',
         ])->where('vote', '[0-9]+');
+
+	//FlushCache
+	$router->get('flush', [
+            'as' => 'flush.cache',
+            'uses' => 'VoteModelController@FlushCache',
+        ]);
 
 	//Excel
 	$router::group([

@@ -38,21 +38,6 @@ class LoginController extends Controller
         $this->vote_model = $VoteModelRepository;
 	}
 
-    public function Index($id)
-    {
-        //进入队列 若队列已满 0.3s后请求
-        while (!$this->behalf->doQueue('Index', 150, 300000)) {
-            usleep(300000);
-        }
-
-        return $this->vote_model->ReturnJsonResponse(
-            200, $id, '',[
-                'name' => $this->vote_model->showVoteMes($id),
-                'url' => 'http://'.$_SERVER["HTTP_HOST"].'/api/'
-            ]
-        );
-    }
-
 	/**
      * Login && Sign 代表签到模块
      * @author leekachung <leekachung17@gmail.com>

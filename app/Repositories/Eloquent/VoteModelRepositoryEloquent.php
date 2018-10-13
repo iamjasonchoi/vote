@@ -149,8 +149,7 @@ class VoteModelRepositoryEloquent extends BaseRepository implements VoteModelRep
      */
     public function CreateVoteUrl($id)
     {
-        $url = app('Dingo\Api\Routing\UrlGenerator')->version('v1')
-                ->route('vote.index', $id);
+        $url = route('vote.qrcode', $id);
         $img_url = 'img/vote_qrcode/xingkongus_' . $id . '.png';
         if (!file_exists(public_path($img_url))) {
             $img_store = QrCode::format('png')->size(666)->encoding('UTF-8')

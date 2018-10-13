@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 
 use Auth;
 
+use Cache;
+
 use App\Http\Requests\VoteModelRequest;
 
 use App\Repositories\Eloquent\VoteModelRepositoryEloquent;
@@ -165,6 +167,38 @@ class VoteModelController extends Controller
         $res = $this->vote_model->CreateVoteUrl($id);
 
         return view('admin.vote.qrcode', compact('res'));
+    }
+
+    /**
+     * flushCache 清空展示候选人API数据
+     * @author leekachung <leekachung17@gmail.com>
+     */
+    public function flushCache()
+    {
+        $this->vote->flushCache();
+        
+        flash('清空缓存成功');
+        return back();
+    }
+
+    /**
+     * initApi 投票Api初始化
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $id [description]
+     */
+    public function initApi($id)
+    {
+        //进入队列 若队列已满 0.3s后请求
+        while (!$this->behalf->doQueue('Index', 150, 300000)) {
+            usleep(300000);
+        }
+
+        $res = [
+            'id' => $id,
+            'name' => $this->vote_model->showVoteMes($id),
+            'url' => 'http://'.$_SERVER["HTTP_HOST"].'/api/'
+        ];
+        return view('admin.init', compact('res'));
     }
 
 }

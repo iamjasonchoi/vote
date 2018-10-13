@@ -29,8 +29,6 @@ class VoteController extends Controller
 
     private $vote;
 
-    public $max_num = 50; //允许进入Redis队列最大值
-
     public function __construct(
     	BehalfRepository $BehalfRepository,
     	VoteRepository $VoteRepository)
@@ -49,7 +47,7 @@ class VoteController extends Controller
         $vote_model_id = auth('api')->user()->vote_model_id;
 
         //进入队列 若队列已满 0.3s后请求
-        while (!$this->vote->doQueue('Candidate', 70, 300000)) {
+        while (!$this->vote->doQueue('Candidate', 150, 300000)) {
             usleep(300000);
         }
 
@@ -72,6 +70,11 @@ class VoteController extends Controller
         //进入投票队列 若队列已满 0.3s后请求
         while (!$this->vote->doQueue('behalf', 50, 300000)) {
             usleep(300000);
+        }
+
+        //判断是否投票
+        if ($this->behalf->isVote($auth->id)) {
+            return $this->behalf->ReturnJsonResponse(207, '已投票');
         }
 
         //开启事务

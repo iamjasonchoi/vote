@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\Vote;
 
+use Cache;
+
 use App\Validators\VoteValidator;
 
 use App\Traits\ReturnFormatTrait;
@@ -138,8 +140,10 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
      */
     public function showCandidateList($id)
     {
-        return $this->model->where(['vote_model_id' => $id])
-                    ->paginate(9);
+        return $this->model->where([
+            'vote_model_id' => $id,
+            'is_waiting' => 0
+        ])->paginate(9);
     }
 
     /**
@@ -166,8 +170,15 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
      */
     public function getCandidateList($id)
     {
-        return $this->model->where(['vote_model_id' => $id])
-                    ->get();
+        //设置缓存 减少查库
+        if (!Cache::has('CandidateList')) {
+            Cache::forever('CandidateList', $this->model->where([
+                'vote_model_id' => $id,
+                'is_waiting' => 0
+            ])->get());
+        }
+
+        return Cache::get('CandidateList');
     }
     
     /**
@@ -186,6 +197,8 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
                 'id' => $value
             ])->increment('vote_num');
         }
+
+        return;
     }
 
     /**
@@ -213,10 +226,25 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
                 $this->model->insert([
                     'name' => $value,
                     'vote_model_id' => $vote_model_id,
-                    'vote_num' => 1
+                    'vote_num' => 1,
+                    'is_waiting' => 1
                 ]);
             }
-        }   
+        }
+
+        return;   
+    }
+
+    /**
+     * flushCache 清空展示候选人API数据
+     * @author leekachung <leekachung17@gmail.com>
+     * @return [type] [description]
+     */
+    public function flushCache()
+    {
+        Cache::forget('CandidateList');
+
+        return;
     }
     
 }
