@@ -198,6 +198,7 @@ class VoteModelController extends Controller
             'name' => $this->vote_model->showVoteMes($id),
             'url' => 'http://'.$_SERVER["HTTP_HOST"].'/api/'
         ];
+        
         return view('admin.init', compact('res'));
     }
 
