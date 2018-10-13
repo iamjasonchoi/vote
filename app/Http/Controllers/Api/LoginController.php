@@ -40,8 +40,16 @@ class LoginController extends Controller
 
     public function Index($id)
     {
+        //进入队列 若队列已满 0.3s后请求
+        while (!$this->behalf->doQueue('Index', 150, 300000)) {
+            usleep(300000);
+        }
+
         return $this->vote_model->ReturnJsonResponse(
-            200, $id, '',$this->vote_model->showVoteMes($id)
+            200, $id, '',[
+                'name' => $this->vote_model->showVoteMes($id),
+                'url' => 'http://'.$_SERVER["HTTP_HOST"].'/api/'
+            ]
         );
     }
 
@@ -54,10 +62,22 @@ class LoginController extends Controller
      */
     public function Login(ApiAuthRequest $request)
     {
+        //进入队列 若队列已满 0.3s后请求
+        while (!$this->behalf->doQueue('Login', 50, 300000)) {
+            usleep(300000);
+        }
+
     	$user = $this->behalf->ApiAuth($request);
-        	if ($user) {
+        
+    	if ($user) {
 
     		$this->behalf->signBehalf($user->id); //登录自动签到
+
+            //是否已投票
+            if ($this->behalf->isVote($user->id)) {
+                return $this->behalf->ReturnJsonResponse(207, '已投票');
+            }
+
     		$token = JWTAuth::fromUser($user); //获取token
 
     		return $this->behalf->ReturnJsonResponse(
@@ -66,7 +86,7 @@ class LoginController extends Controller
 
     	} else {
     		return $this->behalf
-                    ->ReturnJsonResponse(206, '权限不允许操作');
+                    ->ReturnJsonResponse(206, '验证身份失败');
     	}
     }
 

@@ -9,11 +9,17 @@ use Prettus\Repository\Criteria\RequestCriteria;
 
 use App\Repositories\Contracts\BehalfRepository;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Behalf;
 
 use App\Validators\BehalfValidator;
 
 use App\Traits\ReturnFormatTrait;
+
+use App\Traits\DoQueueTrait;
+
+use App\Traits\TrimTrait;
 
 use Excel;
 
@@ -25,6 +31,8 @@ use Excel;
 class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepository
 {
     use ReturnFormatTrait;
+
+    use DoQueueTrait;
 
     /**
      * Specify Model class name
@@ -84,17 +92,37 @@ class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepositor
             }
             //批量入库
             $size = sizeof($excelData);
+            if ($size == 0) {
+                flash('导入失败，excel为空')->error();
+                return;
+            }
+
             $storeArr = [];
             for($i = 0; $i < $size; $i++)
             {
+                if (!$this->model->trimAll($excelData[$i][0]) ||
+                    !$this->model->trimAll($excelData[$i][1])) {
+                    continue;
+                }
                 $storeArr[] = [
-                    'name' => $excelData[$i][0],
-                    'student_id' => $excelData[$i][1],
+                    'name' => $this->model->trimAll($excelData[$i][0]),
+                    'student_id' => $this->model->trimAll($excelData[$i][1]),
                     'vote_model_id' => $vote_model_id
                 ];
             }
-            $this->model->insert($storeArr);
-            flash('导入成功');
+
+            //开启事务
+            DB::beginTransaction();
+            try {
+                $this->model->insert($storeArr);
+                //提交事务
+                DB::commit();
+                flash('导入成功');
+            } catch (QueryException $e) {
+                //事务回滚
+                DB::rollback();
+                flash('导入失败，请检查excel数据')->error();
+            }
 
             return;
         });
@@ -224,6 +252,17 @@ class BehalfRepositoryEloquent extends BaseRepository implements BehalfRepositor
             ->update(['is_sign' => 1]);
 
         return;
+    }
+
+    /**
+     * isVote 判断代表是否已投票
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type]  $behalf_id [description]
+     * @return boolean            [description]
+     */
+    public function isVote($behalf_id)
+    {
+        return $this->model->where(['id' => $behalf_id])->value('is_vote');
     }
 
     /**

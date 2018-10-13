@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'auth.votemodel' => \App\Http\Middleware\Admin\VoteModelAuth::class,
         //Api
         'token.refresh' => \App\Http\Middleware\Api\RefreshToken::class,
-        'check.status' => \App\Http\Middleware\Api\CheckStatus::class
+        'check.status' => \App\Http\Middleware\Api\CheckStatus::class,
+        'cors'=>\Barryvdh\Cors\HandleCors::class
     ];
 }

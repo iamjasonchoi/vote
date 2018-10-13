@@ -196,7 +196,12 @@ return [
         /**
          * QRCode
          */
-        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+
+        /**
+         * CORS
+         */
+        Barryvdh\Cors\ServiceProvider::class
 
     ],
 

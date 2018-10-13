@@ -34,7 +34,7 @@ trait ReturnFormatTrait
 	{
 		$param = [
 			'status_code' => $status_code,
-			'messgae' => $messgae,
+			'message' => $messgae,
 			'_token' => $token,
 			'ps' => $ps
 		];

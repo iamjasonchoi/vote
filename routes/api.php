@@ -16,7 +16,9 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
 
-	$api->group(['middleware' => 'check.status'], function ($api) {
+	$api->group([
+		'middleware' => ['check.status', 'cors']
+	], function ($api) {
 
 		//投票初始化API
 		$api->get('vote/{vote_model_id}', 
@@ -41,9 +43,13 @@ $api->version('v1', function ($api) {
 			$api->get('show', 
 				'App\Http\Controllers\Api\VoteController@getCandidateList');
 
-			//投票API
+			//投票API && 查看票数API
 			$api->post('vote', 
 				'App\Http\Controllers\Api\VoteController@vote');
+
+			//查看票数API
+			//$api->get('show/vote_num', 
+			//	'App\Http\Controllers\Api\VoteController@showVoteNum');
 		
 		});
 	});	

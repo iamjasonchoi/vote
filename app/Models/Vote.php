@@ -9,6 +9,8 @@ use Prettus\Repository\Contracts\Transformable;
 
 use Prettus\Repository\Traits\TransformableTrait;
 
+use App\Traits\TrimTrait;
+
 /**
  * Class Vote.
  *
@@ -17,6 +19,8 @@ use Prettus\Repository\Traits\TransformableTrait;
 class Vote extends Model implements Transformable
 {
     use TransformableTrait;
+
+    use TrimTrait;
     
     /**
      * The attributes that are mass assignable.

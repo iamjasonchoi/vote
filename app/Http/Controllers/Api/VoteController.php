@@ -48,8 +48,8 @@ class VoteController extends Controller
     {
         $vote_model_id = auth('api')->user()->vote_model_id;
 
-        //进入队列 若队列已满 0.5s后请求
-        while (!$this->vote->doQueue('Candidate', 70)) {
+        //进入队列 若队列已满 0.3s后请求
+        while (!$this->vote->doQueue('Candidate', 70, 300000)) {
             usleep(300000);
         }
 
@@ -69,16 +69,20 @@ class VoteController extends Controller
 
         $auth = auth('api')->user();
 
-        //进入投票队列 若队列已满 0.5s后请求
-        while (!$this->vote->doQueue('behalf', 50)) {
-            usleep(500000);
+        //进入投票队列 若队列已满 0.3s后请求
+        while (!$this->vote->doQueue('behalf', 50, 300000)) {
+            usleep(300000);
         }
 
         //开启事务
         DB::beginTransaction();
         try {
             //候选人票数增加
-            $this->vote->voteNow($request, $auth->vote_model_id);
+            $this->vote->addBehalf($request, $auth->vote_model_id);
+            if ($request->other_name) {
+                //推荐人选票数增加
+                $this->vote->addRecommended($request, $auth->vote_model_id);
+            }
             //确认代表投票
             $this->behalf->checkVote($auth->id);
             //提交事务

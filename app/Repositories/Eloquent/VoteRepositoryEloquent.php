@@ -9,6 +9,8 @@ use Prettus\Repository\Criteria\RequestCriteria;
 
 use App\Repositories\Contracts\VoteRepository;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Vote;
 
 use App\Validators\VoteValidator;
@@ -89,16 +91,36 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
             }
             //批量入库
             $size = sizeof($excelData);
+            if ($size == 0) {
+                flash('导入失败，excel为空')->error();
+                return;
+            }
+
             $storeArr = [];
             for($i = 0; $i < $size; $i++)
             {
+                if (!$this->model->trimAll($excelData[$i][0])) {
+                    continue;
+                }
                 $storeArr[] = [
-                    'name' => $excelData[$i][0],
+                    'name' => $this->model->trimAll($excelData[$i][0]),
                     'vote_model_id' => $vote_model_id
                 ];
             }
-            $this->model->insert($storeArr);
 
+            //开启事务
+            DB::beginTransaction();
+            try {
+                $this->model->insert($storeArr);
+                //提交事务
+                DB::commit();
+                flash('导入成功');
+            } catch (QueryException $e) {
+                //事务回滚
+                DB::rollback();
+                flash('导入失败，请检查excel数据')->error();
+            }
+            
             return;
         }); 
     }
@@ -155,15 +177,46 @@ class VoteRepositoryEloquent extends BaseRepository implements VoteRepository
      * @param  [type] $vote_model_id [description]
      * @return [type]                [description]
      */
-    public function voteNow($request, $vote_model_id)
+    public function addBehalf($request, $vote_model_id)
     {
-        $voteArr = explode(',', $request->name);
 
-        foreach ($voteArr as $key => $value) {
+        foreach ($request->name as $key => $value) {
             $this->model->where([
                 'vote_model_id' => $vote_model_id,
                 'id' => $value
             ])->increment('vote_num');
         }
     }
+
+    /**
+     * addRecommended 添加推荐人选票数
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $request       [description]
+     * @param  [type] $vote_model_id [description]
+     */
+    public function addRecommended($request, $vote_model_id)
+    {
+
+        foreach ($request->other_name as $key => $value) {
+            //判断是否存在推荐人选记录
+            if ($this->model->where([
+                'vote_model_id' => $vote_model_id,
+                'name' => $value
+            ])->first()) {
+                //存在： 增加票数
+                $this->model->where([
+                    'vote_model_id' => $vote_model_id,
+                    'name' => $value
+                ])->increment('vote_num');
+            } else {
+                //不存在： 新建候选人并默认票数为1
+                $this->model->insert([
+                    'name' => $value,
+                    'vote_model_id' => $vote_model_id,
+                    'vote_num' => 1
+                ]);
+            }
+        }   
+    }
+    
 }

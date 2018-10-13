@@ -11,6 +11,8 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 use App\Traits\ReturnFormatTrait;
 
+use App\Traits\TrimTrait;
+
 use Illuminate\Notifications\Notifiable;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -33,6 +35,8 @@ class Behalf extends Model implements Transformable, JWTSubject, Authenticatable
     use ReturnFormatTrait;
 
     use Authenticatable;
+
+    use TrimTrait;
 
     /**
      * The attributes that are mass assignable.
