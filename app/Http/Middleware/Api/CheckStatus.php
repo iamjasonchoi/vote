@@ -24,7 +24,12 @@ class CheckStatus
      */
     public function handle($request, Closure $next)
     {
-        if (!Cache::has('vote_model_id')) {
+        if (auth('api')->user()) {
+            $vid = auth('api')->user()->vote_model_id;
+        } else {
+            $vid = $request->vote_model_id;
+        }
+        if (!Cache::has('vote_model_id'.$vid)) {
             return $this->ReturnJsonResponse(203, '投票已结束');
         }
         

@@ -24,8 +24,9 @@ class SetStatus
      */
     public function handle($request, Closure $next)
     {
-        if (!Cache::has('vote_model_id')) {
-            $model = VoteModel::where(['id' => $request->vote_model_id])
+        $vid = $request->vote_model_id;
+        if (!Cache::has('vote_model_id'.$vid)) {
+            $model = VoteModel::where(['id' => $vid])
                     ->first();
             //获取距离投票过期时间 单位：分钟
             $diff = $model->end - time();
@@ -36,7 +37,7 @@ class SetStatus
             }
             
             if ($expired > 0) {
-                Cache::put('vote_model_id', $request->vote_model_id, $expired);
+                Cache::put('vote_model_id'.$vid, $vid, $expired);
             } else {
                 return $this->ReturnJsonResponse(203, '投票已结束');
             }

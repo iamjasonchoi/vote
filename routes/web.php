@@ -18,6 +18,14 @@
 Route::get('vote/{vote_model_id}', 'Admin\VoteModelController@initApi')
 	->where('vote_model_id', '[0-9]+')->name('vote.qrcode')
 	->middleware('set.status');
+//实时显示票数
+Route::get('showrealtime/{vote_model_id}/', 
+	'Admin\VoteModelController@showRealtime')
+	->where('vote_model_id', '[0-9]+')->name('vote.show.realtime');
+//
+Route::get('show_init', 'Admin\VoteModelController@getCandidateList')
+	->name('show.init');
+
 
 /**
  * 后台管理

@@ -193,6 +193,8 @@ class VoteModelController extends Controller
             usleep(300000);
         }
 
+        echo "Loading...";
+
         $res = [
             'id' => $id,
             'name' => $this->vote_model->showVoteMes($id),
@@ -202,4 +204,34 @@ class VoteModelController extends Controller
         return view('admin.init', compact('res'));
     }
 
+    /**
+     * showRealtime 实时显示票数
+     * @author leekachung <leekachung17@gmail.com>
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function showRealtime($id)
+    {
+        $url = route('show.init');
+        return view('vote_realtime', compact('url', 'id'));
+    }
+
+    /**
+     * getCandidateList 获取候选人列表
+     * @author leekachung <leekachung17@gmail.com>
+     * @return [type] [description]
+     */
+    public function getCandidateList(Request $request)
+    {
+        //进入队列 若队列已满 0.3s后请求
+        while (!$this->vote->doQueue('Candidate', 150, 300000)) {
+            usleep(300000);
+        }
+
+        $vote_model_id = $request->vote_model_id;
+
+        return $this->vote->ReturnJsonResponse(
+            200, $this->vote->getCandidateList($vote_model_id)
+        );
+    }
 }

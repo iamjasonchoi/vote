@@ -15,6 +15,8 @@ use DB;
 
 use App\Jobs\VoteRequest;
 
+use App\Events\VoteEvent;
+
 use App\Repositories\Eloquent\BehalfRepositoryEloquent;
 
 use App\Repositories\Eloquent\BehalfRepositoryEloquent as BehalfRepository;
@@ -44,12 +46,12 @@ class VoteController extends Controller
      */
     public function getCandidateList()
     {
-        $vote_model_id = auth('api')->user()->vote_model_id;
-
         //进入队列 若队列已满 0.3s后请求
         while (!$this->vote->doQueue('Candidate', 150, 300000)) {
             usleep(300000);
         }
+
+        $vote_model_id = auth('api')->user()->vote_model_id;
 
         return $this->vote->ReturnJsonResponse(
             200, $this->vote->getCandidateList($vote_model_id)
